@@ -68,33 +68,62 @@ class UpdateUserRolesSerializer(serializers.ModelSerializer):
         return instance
      
 class CreateUserSerializer(serializers.ModelSerializer):
-    
-    #Create a new user. Accepts a role name and expands it via ROLE_HIERARCHY
-    #Password is set properly via set_password() so it gets hashed
-    
     role = serializers.ChoiceField(choices=list(ROLE_HIERARCHY.keys()))
     password = serializers.CharField(write_only=True)
- 
+    is_active = serializers.BooleanField(required=False, default=True)
+
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name", "department", "role", "password"]
- 
+        fields = [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "department",
+            "role",
+            "password",
+            "is_active",
+        ]
+
+class AdminUpdateUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "department",
+            "is_active",
+            "password",
+        ]
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance
+    
     def create(self, validated_data):
         role_name = validated_data.pop("role")
         password = validated_data.pop("password")
- 
+
         user = User(**validated_data)
-        user.set_password(password)  # hashes the password — never store plaintext
+        user.set_password(password)
         user.save()
- 
-        # Assign all groups in the hierarchy for this role
+
         group_names = ROLE_HIERARCHY[role_name]
         groups = Group.objects.filter(name__in=group_names)
         user.groups.set(groups)
- 
-        return user
- 
 
+        return user
 
 class GroupSerializer(serializers.ModelSerializer):
      class Meta:
