@@ -8,7 +8,7 @@ from .serializers import MeSerializer
 from rest_framework import generics
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from .permissions import CanManageRoles
+from .permissions import CanManageRoles, CanCreateUsers
 from .serializers import (
     AdminUserSerializer,
     UpdateUserRolesSerializer,
@@ -63,6 +63,19 @@ class AdminUserListAllView(generics.ListAPIView):
     serializer_class = AdminUserSerializer
     permission_classes = [CanManageRoles]
 
+class AdminUserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = CreateUserSerializer
+    permission_classes = [CanCreateUsers]
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        audit_log(
+            self.request,
+            AuditLog.ADMIN_CHANGE,
+            description=f"Admin created user '{user.username}'",
+            extra={"target_user": user.username},
+        )
 
 class AdminRolesUpdateView(generics.UpdateAPIView):
     """
