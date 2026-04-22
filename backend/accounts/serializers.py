@@ -31,29 +31,30 @@ class AdminUserSerializer(serializers.ModelSerializer):
 
 
 class UpdateUserRolesSerializer(serializers.ModelSerializer):
-     # Allow updating the user's groups via a list of group IDs
-     role_ids = serializers.PrimaryKeyRelatedField(
+    role_ids = serializers.PrimaryKeyRelatedField(
         source="groups",
         queryset=Group.objects.all(),
         many=True,
         write_only=True
-     )
-     roles = serializers.SerializerMethodField(read_only=True)
+    )
+    roles = serializers.SerializerMethodField(read_only=True)
 
-     class Meta:
+    class Meta:
         model = User
         fields = ["id", "email", "username", "role_ids", "roles"]
 
-     def get_roles(self, obj):
+    def get_roles(self, obj):
         return list(obj.groups.values_list("name", flat=True))
-     
-     #updates roles whenever a user role is changed/PATCHED
-     def update(self, instance, validated_data):
-        role_name = validated_data.pop("role")
-        group_names = ROLE_HIERARCHY[role_name]
-        groups = Group.objects.filter(name__in=group_names)
-        # Replace all groups with the full cumulative set for this role
-        instance.groups.set(groups)
+
+    def update(self, instance, validated_data):
+        groups = validated_data.pop("groups", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if groups is not None:
+            instance.groups.set(groups)
+
         instance.save()
         return instance
      
