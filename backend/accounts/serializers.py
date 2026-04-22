@@ -20,13 +20,22 @@ class MeSerializer(serializers.ModelSerializer):
         return list(obj.get_all_permissions())
     
 class AdminUserSerializer(serializers.ModelSerializer):
-     roles = serializers.SerializerMethodField()
+    roles = serializers.SerializerMethodField()
 
-     class Meta:
+    class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name", "department", "roles"]
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "department",
+            "roles",
+            "is_active",
+        ]
 
-     def get_roles(self, obj):
+    def get_roles(self, obj):
         return list(obj.groups.values_list("name", flat=True))
 
 
