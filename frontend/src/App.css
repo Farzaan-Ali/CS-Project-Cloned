@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+:root {
+  --ridgemont-blue: #006BB7;
+  --ridgemont-black: #231F20;
+  --ridgemont-white: #FFFFFF;
+  --ridgemont-blue-dark: #005494;
+  --ridgemont-blue-light: #E8F2FA;
+  --text-color: var(--ridgemont-black);
+  --bg-color: #F4F6F8;
+  --accent: var(--ridgemont-blue);
+}
+
+body {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: var(--bg-color);
+}
+
+.main__container {
+  border-radius: 0.4rem;
+  display: flex;
+  margin-top: 4rem;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+  font-family: "Nunito Sans", Arial, sans-serif;
+  width: max-content;
+  padding: 8rem;
+  color: var(--text-color);
+  background: var(--ridgemont-white);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid #D8E4EE;
+  border-top: 5px solid var(--ridgemont-blue);
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--ridgemont-blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tab__header {
+  display: flex;
+  list-style: none;
+  gap: 0.4rem;
+}
+
+.tab__header button {
+  flex: 1;
+  cursor: pointer;
+  padding: 1.2rem 2.4rem;
+  background: transparent;
+  border: 2px solid var(--ridgemont-blue);
+  color: var(--ridgemont-blue);
+  font-family: "Nunito Sans", Arial, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab__header button:hover {
+  background: var(--ridgemont-blue-light);
+  color: var(--ridgemont-blue-dark);
+}
+
+.tab__button--active {
+  background: var(--ridgemont-blue) !important;
+  color: var(--ridgemont-white) !important;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.tab__container {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.6rem;
+  width: 80rem;
+  border-radius: 0;
+  padding: 3rem;
+  box-shadow: none;
+  gap: 2rem;
+  border: 1px solid #D8E4EE;
+  background: var(--ridgemont-white);
+}
+
+.tab__content {
+  padding: 3rem;
+  min-height: 25rem;
+  border: 1px solid #D8E4EE;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  background: var(--ridgemont-blue-light);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.tab__content img {
+  max-width: 31rem;
+  max-height: 20rem;
+  width: 100%;
+}
+
+.tab__content p {
+  text-align: center;
+  color: var(--ridgemont-black);
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-family: "Nunito Sans", Arial, sans-serif;
+}
+
+@media screen and (max-width: 1000px) {
+  .main__container {
+    gap: 2rem;
+    padding: 2.4rem;
+    width: 95%;
+    margin: 5rem auto;
+  }
+
+  .message {
+    font-size: 5rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+  }
+
+  .tab__header {
+    flex-wrap: wrap;
+  }
+
+  .tab__content {
+    gap: 2rem;
+    min-height: 35rem;
+  }
+
+  .tab__header button {
+    font-size: 1.4rem;
+    padding: 1rem 1.6rem;
+  }
+
+  .tab__container {
+    width: 100%;
+    padding: 1.6rem;
+  }
+
+  .tab__content img {
+    max-width: 150px;
+  }
+
+  .tab__content p {
+    font-size: 1.4rem;
+  }
+}
+
+.btn {
+  padding: 0.9rem 2rem; border: 2px solid; border-radius: 0;
+  font-family: "Nunito Sans", sans-serif; font-size: 1.3rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.btn--danger-ghost { background: transparent; color: #c0392b; border-color: #c0392b; }
+.btn--danger-ghost:hover { background: #fdf3f3; }

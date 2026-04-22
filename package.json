@@ -1,0 +1,32 @@
+{
+  "name": "computer-science-project",
+  "version": "1.0.0",
+  "description": "This is the README, read this me",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexQuigley/Computer-Science-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AlexQuigley/Computer-Science-Project/issues"
+  },
+  "homepage": "https://github.com/AlexQuigley/Computer-Science-Project#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.2.4",
+    "react-router-dom": "^7.13.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
+  }
+}
