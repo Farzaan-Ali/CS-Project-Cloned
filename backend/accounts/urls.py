@@ -24,5 +24,6 @@ urlpatterns = [
     path("admin/roles/", AdminRolesCreateView.as_view(), name="admin-roles"),
 
     # Moderator + Admin
-    path("admin/users/create/", CreateTestUserView.as_view(), name="create-user"),
+    path("dev/create-test-user/", CreateTestUserView.as_view(), name="create-test-user"),
+    path("admin/users/create/", AdminUserCreateView.as_view(), name="create-user"),
 ]
