@@ -10,9 +10,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from .permissions import CanManageRoles, CanCreateUsers
 from .serializers import (
+    MeSerializer,
     AdminUserSerializer,
     UpdateUserRolesSerializer,
     GroupSerializer,
+    CreateuserSerializer,
+    AdminUpdateUserSerializer,
 )
 
 #stuff for dev login and logout
@@ -75,6 +78,31 @@ class AdminUserCreateView(generics.CreateAPIView):
             AuditLog.ADMIN_CHANGE,
             description=f"Admin created user '{user.username}'",
             extra={"target_user": user.username},
+        )
+
+class AdminUserUpdateView(generics.UpdateAPIView, generics.DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = AdminUpdateUserSerializer
+    permission_classes = [CanManageRoles]
+    http_method_names = ["patch", "delete", "options", "head"]
+
+    def perform_update(self, serializer):
+        user = serializer.save()
+        audit_log(
+            self.request,
+            AuditLog.ADMIN_CHANGE,
+            description=f"Admin updated user '{user.username}'",
+            extra={"target_user": user.username},
+        )
+
+    def perform_destroy(self, instance):
+        username = instance.username
+        instance.delete()
+        audit_log(
+            self.request,
+            AuditLog.ADMIN_CHANGE,
+            description=f"Admin deleted user '{username}'",
+            extra={"target_user": username},
         )
 
 class AdminRolesUpdateView(generics.UpdateAPIView):
@@ -184,7 +212,10 @@ class LoginView(APIView):
             description=f"User '{user.username}' logged in",
             user=user,
         )
-        return Response({"detail": "Logged in"})
+        return Response({
+            "message": "Logged in",
+            "user": MeSerializer(user).data,
+        })
 
 
 class LogoutView(APIView):
@@ -198,7 +229,7 @@ class LogoutView(APIView):
             description=f"User '{request.user.username}' logged out",
         )
         logout(request)
-        return Response({"detail": "Logged out"})
+        return Response({"message": "Logged out"})
 
 
 class CreateTestUserView(APIView):
